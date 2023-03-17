@@ -16,12 +16,12 @@ from tqdm import tqdm
 # Read the gis data
 path_to_canton = "./spatial/canton"
 path_to_astra = "./spatial/astra/"
-path_to_dav = "./spatial/city/"
+path_to_city = "./spatial/city/"
 # path_to_loops = "./spatial/loops"
 # Change the crs to EPSG:4326 (lat,long)
 canton_gdf = geopandas.read_file(path_to_canton).to_crs("EPSG:4326")
 astra_gdf = geopandas.read_file(path_to_astra).to_crs("EPSG:4326")
-city_gdf = geopandas.read_file(path_to_dav).to_crs("EPSG:4326")
+city_gdf = geopandas.read_file(path_to_city).to_crs("EPSG:4326")
 # loops_gdf = geopandas.read_file(path_to_loops).to_crs("EPSG:4326")
 
 

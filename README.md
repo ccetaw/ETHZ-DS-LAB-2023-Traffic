@@ -137,7 +137,14 @@ City data are stored per year in csv files in the format of `Zurich_YYYY_raw2.cs
  6   suspect     int64
 ```
 
-We have no annotation to the columns now. 
+Annotation
+```
+interval = seconds from midnight
+flow = flow per hour in the interval
+occ = occupancy in percentage of time during which the detector was occupied (i.e. covered by a vehicle)
+valid= the system classified the measurement as a valid one (without errors)
+suspect= the system classified the measurement as suspicious (maybe an error)
+```
 
 Example:
 ```
@@ -191,7 +198,7 @@ To make further analysis easier, we make some aggregations to reduce the data si
 
 ######[TODO]#####
 
-| sensor_id | lane_id | date(day or month or hour) | \# cars | avg_speed | ... | 
+| sensor_id | lane_id | time(day or month or hour) | \# cars | avg_speed | ... | 
 | --------- | ------- | -------------------------- | ------- | --------- | --- |
 |           |         |                            |         |           |     |
 
@@ -199,7 +206,7 @@ To make further analysis easier, we make some aggregations to reduce the data si
 
 ######[TODO]#####
 
-| sensor_id | lane_id | date(day or month or hour) | \# cars | avg_speed | ... | 
+| sensor_id | lane_id | time(day or month or hour) | \# cars | avg_speed | ... | 
 | --------- | ------- | -------------------------- | ------- | --------- | --- |
 |           |         |                            |         |           |     |
 
@@ -207,9 +214,11 @@ To make further analysis easier, we make some aggregations to reduce the data si
 
 ######[TODO]#####
 
-| sensor_id | date(day or month or hour) | \# cars | avg_occ | ... | 
+| sensor_id | time(day or month or hour) | \# cars |  avg_occ  | ... | 
 | --------- | -------------------------- | ------- | --------- | --- |
 |           |                            |         |           |     |
+
+Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month.
 
 The data is organized the way below:
 

@@ -231,7 +231,12 @@ Aggregation:
 | --------- | -------------------------- | ------- | --------- | --- |
 |           |                            |         |           |     |
 
-Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month.
+Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month, e.g. `1888_2021-08-10-09.csv`.
+
+for sensorid 132_2 for 4 years
+4*12 files named by 132_2_YYYY-MM.csv
+4*365 files named by 132_2_YYYY-MM-DD.csv
+4*365*12 files named by 132_2_YYYY-MM-DD-hh.csv
 
 The data is organized the way below:
 

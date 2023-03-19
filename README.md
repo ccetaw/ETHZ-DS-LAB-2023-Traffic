@@ -217,11 +217,25 @@ Aggregation:
 
 **Astra**:
 
-######[TODO]#####
+Preprocessing:
 
-| sensor_id | lane_id | time(day or month or hour) | \# cars | avg_speed | ... | 
-| --------- | ------- | -------------------------- | ------- | --------- | --- |
-|           |         |                            |         |           |     |
+| _id                    | zs_id | vd |	vd_class_val | vd_dir | vd_speed_val |	year |	month |	day | hour | wkday |
+|------------------------|-------|----|	------------ | ------ | ------------ |	---- |	----- |	--- | ---- | ----- |
+|5e0be1003b035ede49e1c836|	2    |	2 |	3            |	+     |	71           |	2020 |	1     |	1   |	23 |	2  |
+|5e0be1083b035ede49e1c851|	2    |	2 |	3            |	+     |	67           |	2020 |	1     |	5   |	21 |	3  |
+|5e0be1183b035ede49e1c8a9|	2    |	1 |	3            |	+	  | 83           |	2020 |	1     |	1   |	0  | 	2  |
+|5e0be11a3b035ede49e1c8b5|	2    |	1 |	3            |	+     |	78           |	2020 |	1     |	1   |	0  |	2  |
+|5e0be11c3b035ede49e1c8b8|	2    |	2 |	3            |	+     |	80           |	2020 |	1     |	1   |	0  |	2  |
+
+Aggregation:
+
+| zs_id     | vd      | time(day or month or hour) | _id     | vd_speed_val |          |         |        |
+|-----------|---------|----------------------------|---------|--------------|----------|---------|--------|
+|-----------|---------|----------------------------| count   | mean         | std      | min     | max    |           
+| 42        |	1     |	0	                       | 4	     | 47.000000    | 2.449490 | 44	     |  49    |
+| 42        |	1     |	5	                       | 3	     | 48.666667    | 2.081666 | 47	     |  51    |
+| 42        |	1     |	6	                       | 12	     | 48.083333    | 2.906367 | 43	     |  55    |
+
 
 **City**:
 
@@ -231,12 +245,7 @@ Aggregation:
 | --------- | -------------------------- | ------- | --------- | --- |
 |           |                            |         |           |     |
 
-Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month, e.g. `1888_2021-08-10-09.csv`.
-
-for sensorid 132_2 for 4 years
-4*12 files named by 132_2_YYYY-MM.csv
-4*365 files named by 132_2_YYYY-MM-DD.csv
-4*365*12 files named by 132_2_YYYY-MM-DD-hh.csv
+Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month.
 
 The data is organized the way below:
 

@@ -196,8 +196,6 @@ To make further analysis easier, we make some aggregations to reduce the data si
 
 **Canton**:
 
-######[TODO]#####
-
 Preprocessing:
 
 |  SITE_id	| lane_id | HEAD |  DDMMYY    | wkday | hour | min | SS  |  HH | SPD | D | CS |

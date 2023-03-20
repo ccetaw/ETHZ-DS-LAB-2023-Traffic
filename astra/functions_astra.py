@@ -33,8 +33,11 @@ def astra_input(file_path):
   return df
 
 def preprocess_astra(df):
+  if df.isnull().sum().sum()/(df.shape[0]) < 0.01:
     df.dropna(inplace = True)
-    return 0
+  else:
+    print('Impute needed!')
+  return 0
 
 
 def aggregate_astra(df, columns, groupby_columns, agg_dict):

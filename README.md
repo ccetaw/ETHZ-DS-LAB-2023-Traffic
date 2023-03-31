@@ -239,9 +239,7 @@ Aggregation:
 
 **City**:
 
-######[TODO]#####
-
-| sensor_id | time(day or month or hour) | \# cars |  avg_occ  | ... | 
+| sensor_id | time(day or month or hour) | avg_flow |  avg_occ  | ... | 
 | --------- | -------------------------- | ------- | --------- | --- |
 |           |                            |         |           |     |
 
@@ -274,10 +272,54 @@ In each folder, we store the data in a predefined way. If the raw data is too la
 
 We use `folium` and `plotly` to visualize the data to have a basic idea of the data. 
 
-### Task 3: Query
+## Stage 2: Build Machine Learning Model
+After having preprocessed the data, we now proceed to building a machine learning model that reveals the connection between covid and the traffic state. 
 
-Design a function that we can use to query any data according to the sensor id. This would be very useful in the future. 
+We first cluster the sensors to reduce the data dimensions. We could do different clustering to get different insights. Start simple we just cluster them by regions. 
 
-### Task 4: Sensor Connection Reconstruction
+Then we decide which traffic feature we want to use, could be 
 
-In this task, we will work on reconstructing the connections between the different sensors in the traffic system. 
+- Total/Average occupancy of the cluster
+- Total/Average flow of the cluster
+- Total car counts of the cluster
+- …
+
+The input of the model will be 
+
+- The case number
+- The R factor
+- The rate of changing of R factor
+- The rate of changing of case number
+- The lockdown level
+- Workday or holiday
+- …
+
+The output will be
+
+- The traffic feature of each cluster (relative or absolute)
+- …
+
+### Task 0: Covid Data
+
+[-----TODO-----]
+
+Prepare the Covid data and make it accessible to everyone.
+
+### Task 1: Strategty
+
+[-----TODO-----]
+
+Decide on a clustering strategy, the feature to use
+
+
+### Task 2: Process the Data
+
+[-----TODO-----]
+
+Process the data such that it is able to be fed into the model
+
+### Task 3: ML Model
+
+[-----TODO-----]
+
+Build a training pipeline using PyTorch or anything else

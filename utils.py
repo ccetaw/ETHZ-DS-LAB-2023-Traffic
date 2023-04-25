@@ -77,7 +77,13 @@ def to_relative(series):
     Output:
     - relative values
     """
-    return series/np.sum(series.to_numpy())
+    return series/np.nansum(series.to_numpy())
+
+def to_relative_np(array):
+    """
+    np version of to_relative
+    """
+    return array / np.nansum(array)
 
 def normalize(series):
     """

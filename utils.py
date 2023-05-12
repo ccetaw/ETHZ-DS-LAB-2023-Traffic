@@ -5,6 +5,15 @@ from datetime import datetime
 import numpy as np
 
 def read_from_ids(ids, daytype, dir):
+    """Reading csv files for a list of sensor ids
+    Args:
+        - ids: list of ids
+        - daytype: choose from {"workday", "weekend", "holiday"}
+        - dir: directory containing files
+
+    Returns:
+        - A dict with keys being id and value being corresponding dataframe
+    """
     data_dict = {}
     for id in tqdm(ids, desc="Reading "+ daytype + " data"):
         try:
@@ -16,20 +25,17 @@ def read_from_ids(ids, daytype, dir):
     return data_dict
 
 def query(sensor_data, begin, end, scale):
-    """
-    Input:
+    """Query the aggregated data from the sensor data list in (begin, end) for a scale.
+    The finest scale is hour. Could also choose "day", "week" and "month". For missing id, ignore it.
+
+    Args:
     - sensor_data: A list of sensor data
-    - begin, end: datetime, Time range
+    - begin, end: datetime
     - scale: {hour, day, week, month}
 
-    Output:
+    Returns:
     - Statistics(a pd.Series) on these sensors during a specific time range
-
-    Details:
-    - For missing id, ignore it
     """
-    # Select data in [begin, end] 
-    # Aggregate by scale
     if scale == "hour":
         data_in_range = []
         for data in sensor_data:
@@ -69,33 +75,46 @@ def query(sensor_data, begin, end, scale):
                                                   flow = pd.NamedAgg(column="flow", aggfunc="mean")).reset_index()
     return agg_data         
 
-def to_relative(series):
-    """
-    Input:
-    - series: pandas.Series
+def relative(array):
+    """Get the relative values of an array, i.e., every element sums up to 1
+    nan values are treated with np.nansum(), i.e., ignored
 
-    Output:
+    Args:
+    - array: numpy array
+
+    Returns:
     - relative values
     """
-    return series/np.nansum(series.to_numpy())
-
-def to_relative_np(array):
-    """
-    np version of to_relative
-    """
+    assert len(array.shape) == 1
     return array / np.nansum(array)
 
-def normalize(series):
+def normalize(array):
     """
-    Input:
-    - series: pandas.Series
+    Args:
+    - array: np.array
 
-    Output:
-    - relative values
+    Returns:
+    - normalized values
     """
-    return (series - series.mean()) / series.std()
+    assert len(array.shape) == 1
+    return (array - np.mean(array)) / np.std(array)
    
+def compute_yoy(before, after):
+    """ Compute year over year increase/decrease percentage
+    Args:
+    - before: scalar or numpy array
+    - after: scalar or numpy array
 
+    Returns:
+    - ratio: increase/decrease percentage
+    """
+    assert type(before) == type(after)
+    if type(before) == np.ndarray:
+        assert len(before) == len(after)
+
+    return (after - before) / before
+
+# Testing 
 if __name__ == "__main__":
     id_path = "./preprocessed_data/city/city_id.csv"
     data_path = "./preprocessed_data/city"
@@ -104,7 +123,5 @@ if __name__ == "__main__":
     weekend_df_list = list(weekend_df_dict.values())
     weekend_agg_df = query(weekend_df_list, datetime(2018,1,1), datetime(2018,2,1), "hour")
     print(weekend_agg_df)
-    weekend_agg_df = query(weekend_df_list, datetime(2018,2,1), datetime(2018,3,1), "hour")
-    print(weekend_agg_df)
-    print(to_relative(weekend_agg_df["occ"]))
-    print(normalize(weekend_agg_df["occ"]))
+    print(relative(weekend_agg_df["occ"].to_numpy()))
+    print(normalize(weekend_agg_df["occ"].to_numpy()))

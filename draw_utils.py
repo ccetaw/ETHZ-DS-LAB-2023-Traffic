@@ -11,14 +11,16 @@ Utilities for simplifying drawing, using plotly
 """
 
 def draw_bar_plot(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=None):
-    """Draw a bar plot
+    """Draw a bar plot. You can pass multiple x's and y's such that they appear on the same graph. If 
+    you want to draw for single x and y, remember also to use []brackets to embrace them.
     
     Args:
-    - names: list. legend
+    - names: list of strings. legends
     - x: list of list. bin names
     - y: list of list. bin values
     - layout_dict: dictionary for updating default layout
     - trace_dict: dictionary for updating defauce trace config
+    - icolor: list of integers. color index, if None, use default color scheme
 
     Returns:
     - Plotly figure
@@ -71,6 +73,7 @@ def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict
     - y: list of list. bin values
     - layout_dict: dictionary for updating default layout
     - trace_dict: dictionary for updating defauce trace config
+    - icolor: list of integers. color index, if None, use default color scheme
 
     Returns:
     - Plotly figure
@@ -134,7 +137,8 @@ def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict
 
 
 def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=None):
-    """Draw a line plot
+    """Draw a line plot. You can pass multiple x's and y's such that they appear on the same graph. If 
+    you want to draw for single x and y, remember also to use []brackets to embrace them.
     
     Args:
     - names: list. legend
@@ -142,6 +146,7 @@ def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=
     - y: list of list. 
     - layout_dict: dictionary for updating default layout
     - trace_dict: dictionary for updating defauce trace config
+    - icolor: list of integers. color index, if None, use default color scheme
 
     Returns:
     - Plotly figure
@@ -226,7 +231,7 @@ def draw_bubble_map(legend, lat, lon, z, layout_dict=dict(), mapbox_dict=dict(),
         )
     )
     fig.update_mapboxes(
-        center = dict(lat=47.384065708143886, lon=8.530691620597517),
+        center = dict(lat=47.384065708143886, lon=8.530691620597517), # Center of Zurich is used here, change it for your own case
         zoom = 12,
         style = "open-street-map",
     )
@@ -280,7 +285,7 @@ def draw_density_map(legend, lat, lon, z, layout_dict=dict(), mapbox_dict=dict()
         )
     )
     fig.update_mapboxes(
-        center = dict(lat=47.384065708143886, lon=8.530691620597517),
+        center = dict(lat=47.384065708143886, lon=8.530691620597517), # Center of Zurich is used here, change it for your own case
         zoom = 12,
         style = "open-street-map",
     )
@@ -352,7 +357,7 @@ def draw_density_map_with_slider(legends, lat, lon, z, layout_dict=dict(), mapbo
         )
     )
     fig.update_mapboxes(
-        center = dict(lat=47.384065708143886, lon=8.530691620597517),
+        center = dict(lat=47.384065708143886, lon=8.530691620597517), # Center of Zurich is used here, change it for your own case
         zoom = 12,
         style = "open-street-map",
     )
@@ -398,13 +403,8 @@ def draw_choropleth_map(legend, gdf, z, layout_dict=dict(), mapbox_dict=dict(), 
     )
 
     # Basic config
-    fig.update_layout(
-        mapbox_style="carto-positron",
-        mapbox_zoom=11, 
-        mapbox_center = {"lat": 47.384065708143886, "lon": 8.530691620597517}
-    )
     fig.update_mapboxes(
-        center = dict(lat=47.384065708143886, lon=8.530691620597517),
+        center = dict(lat=47.384065708143886, lon=8.530691620597517), # Center of Zurich is used here, change it for your own case
         zoom = 12,
         style = "carto-positron"
     )

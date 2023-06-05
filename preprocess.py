@@ -64,6 +64,5 @@ for i in range(len(dfs)):
         valied_sensor_data.to_csv(os.path.join(processed_dir, names[i], detid+".csv")) 
 
         
-print(total_rows, valid_rows)
 
 

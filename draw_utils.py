@@ -10,7 +10,7 @@ import json
 Utilities for simplifying drawing, using plotly
 """
 
-def draw_bar_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
+def draw_bar_plot(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=None):
     """Draw a bar plot
     
     Args:
@@ -24,11 +24,14 @@ def draw_bar_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
     - Plotly figure
     """
     # Draw figure with random color
-    colors = px.colors.qualitative.T10.copy()
+    colors = px.colors.qualitative.T10.copy() + px.colors.qualitative.G10.copy() + px.colors.qualitative.D3.copy() + px.colors.qualitative.Bold.copy()
     fig = go.Figure()
     for i in range(len(legends)):
-        marker_color = colors[0]
-        colors.remove(marker_color)
+        if icolor == None:
+            marker_color = colors[i]
+            colors.remove(marker_color)
+        else:
+            marker_color = colors[icolor[i]]
         fig.add_trace(
             go.Bar(
                 name = legends[i],
@@ -59,7 +62,7 @@ def draw_bar_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
 
     return fig
 
-def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict()):
+def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=None):
     """Draw a bar plot with slider that changes the data to show
 
     Args:
@@ -73,10 +76,15 @@ def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict
     - Plotly figure
     """
     # Draw figure with random color
-    colors = px.colors.qualitative.T10.copy()
-    marker_color = colors[0]
+    colors = px.colors.qualitative.T10.copy() + px.colors.qualitative.G10.copy() + px.colors.qualitative.D3.copy() + px.colors.qualitative.Bold.copy()
+    
     fig = go.Figure()
     for i in range(len(legends)):
+        if icolor == None:
+            marker_color = colors[i]
+            colors.remove(marker_color)
+        else:
+            marker_color = colors[icolor[i]]
         fig.add_trace(
             go.Bar(
                 name = legends[i],
@@ -125,7 +133,7 @@ def draw_bar_plot_with_slider(legends, x, y, layout_dict=dict(), trace_dict=dict
     return fig
 
 
-def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
+def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict(), icolor=None):
     """Draw a line plot
     
     Args:
@@ -139,11 +147,14 @@ def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
     - Plotly figure
     """
     # Draw figure with random color
-    colors = px.colors.qualitative.T10.copy()
+    colors = px.colors.qualitative.T10.copy() + px.colors.qualitative.G10.copy() + px.colors.qualitative.D3.copy() + px.colors.qualitative.Bold.copy()
     fig = go.Figure()
     for i in range(len(legends)):
-        marker_color = colors[0]
-        colors.remove(marker_color)
+        if icolor == None:
+            marker_color = colors[i]
+            colors.remove(marker_color)
+        else:
+            marker_color = colors[icolor[i]]
         fig.add_trace(
             go.Scatter(
                 name = legends[i],
@@ -170,6 +181,62 @@ def draw_line_plot(legends, x, y, layout_dict=dict(), trace_dict=dict()):
 
     # Custom config
     fig.update_traces(trace_dict)
+    fig.update_layout(layout_dict)
+
+    return fig
+
+def draw_bubble_map(legend, lat, lon, z, layout_dict=dict(), mapbox_dict=dict(), trace_dict=dict()):
+    """Draw a density map
+    
+    Args:
+    - legend: string, legend
+    - lat: list, latitude
+    - lon: list. longititude
+    - z: list, value of each point
+    - layout_dict: dictionary for updating default layout
+    - trace_dict: dictionary for updating defauce trace config
+
+    Returns:
+    - Plotly figure
+    """
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scattermapbox(
+            name = legend,
+            lat = lat,
+            lon = lon,
+            marker = dict(
+                size = 13,
+                color = z,
+                showscale = True,
+                colorscale = "Portland"
+            ),
+        )
+    )
+
+    # Basic config
+    fig.update_layout(
+        showlegend = True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    fig.update_mapboxes(
+        center = dict(lat=47.384065708143886, lon=8.530691620597517),
+        zoom = 12,
+        style = "open-street-map",
+    )
+    fig.update_traces(
+        hoverinfo = "all",
+    )
+
+    # Custom config
+    fig.update_traces(trace_dict)
+    fig.update_mapboxes(mapbox_dict)
     fig.update_layout(layout_dict)
 
     return fig
@@ -214,7 +281,7 @@ def draw_density_map(legend, lat, lon, z, layout_dict=dict(), mapbox_dict=dict()
     )
     fig.update_mapboxes(
         center = dict(lat=47.384065708143886, lon=8.530691620597517),
-        zoom = 11,
+        zoom = 12,
         style = "open-street-map",
     )
     fig.update_traces(
@@ -286,7 +353,7 @@ def draw_density_map_with_slider(legends, lat, lon, z, layout_dict=dict(), mapbo
     )
     fig.update_mapboxes(
         center = dict(lat=47.384065708143886, lon=8.530691620597517),
-        zoom = 11,
+        zoom = 12,
         style = "open-street-map",
     )
     fig.update_traces(
@@ -338,7 +405,7 @@ def draw_choropleth_map(legend, gdf, z, layout_dict=dict(), mapbox_dict=dict(), 
     )
     fig.update_mapboxes(
         center = dict(lat=47.384065708143886, lon=8.530691620597517),
-        zoom = 11,
+        zoom = 12,
         style = "carto-positron"
     )
     fig.update_traces(
@@ -414,7 +481,7 @@ def draw_choropleth_with_slider(legends, gdf, z, layout_dict=dict(), mapbox_dict
     )
     fig.update_mapboxes(
         center = dict(lat=47.384065708143886, lon=8.530691620597517),
-        zoom = 11,
+        zoom = 12,
         style = "carto-positron"
     )
     fig.update_traces(

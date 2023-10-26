@@ -1,5 +1,5 @@
 # ETHZ-DS-LAB-2023-Traffic
-This is the project page for ETHz Data Science Lab 2023 Traffic problem.
+This is the project page for ETHz Data Science Lab 2023. We collaborated with [ETH IVT Group](https://www.ivt.ethz.ch/en/) and completed a detailed analysis on the traffic sensor data of the Swiss federal highway, Zurich canton and Zurich city. Due to data privacy, we are not able to publish the original dataset but we are allowed to publish our analysis report. In this repo you can find our conclusions as well as the drawing utilities we draw our figures (easy-to-use [plotly](https://github.com/plotly/plotly.py) plugin functions). You can also find the code for generating the figures in `report.ipynb` but you are not able to run it without the data.
 
 **Team Members**
 ---
@@ -7,31 +7,7 @@ This is the project page for ETHz Data Science Lab 2023 Traffic problem.
 - Jingyu Wang [jingyuwang@student.ethz.ch](mailto:jingyuwang@student.ethz.ch)
 - Shakhnovich Kirill [kirillsh@student.ethz.ch](mailto:kirillsh@student.ethz.ch)
 
-## Stage 1: Data Exploration
----
-
-In the first stage we try to explore the data and try to design an easy way to get specific information we want. Since the data is geologically distributed, a natural way would be to design a graphical user interface to interactively get the data we want. 
-
-### Preliminary
-Here is how to set up the environment and how to run the script:
-
-- To set up the environment:
-
-```shell
-conda env create --name dslab --file environment.txt
-conda activate dslab
-```
-Note that you may need to update the packages needed along the time, use
-
-```shell
-conda activate dslab
-conda install --file environment.txt
-```
-
-
-### Task 1: Statistics
-In this task, we will explore the descriptive statistics of the traffic data, such as mean, median, standard deviation, and quartiles. We will also analyze the distribution of traffic data to identify any outliers or anomalies.
-Preferably we use PySpark to do the job because the whole dataset is extremely big, but in the first stage we could use pandas for now.
+## Introduction
 
 Without any preprocesisng, we have three(four) data set:
 
@@ -191,135 +167,8 @@ And the corresponding **GIS data**:
 4  K2.D16  IMP  POINT (8.51884 47.37487)
 ```
 
+## Conclusions
 
-To make further analysis easier, we make some aggregations to reduce the data size. Since we work on a large time scale(4 years), we aggregate the data per sensor then per day(month, year, or hour if needed). Ideally after preprocessing the data should look like
+Please find our poster below to see our main conclusions.
 
-**Canton**:
-
-Preprocessing:
-
-|  SITE_id	| lane_id | HEAD |  DDMMYY    | wkday | hour | min | SS  |  HH | SPD | D | CS |
-| --------- | ------- |------|------------|-------| -----| --- | --- | --- | ----| --| -- |
-|1888       |	2.0   |000001|2021-09-29  |	3	  |0     |	0  | 3.0 | 0.0 | 49  |1.0|  1 |
-|1888       |	1.0   |000002|2021-09-29  |	3	  |0     |	0  | 35.0| 0.0 | 51  |1.0|  3 |
-|1888       |	2.0   |000003|2021-09-29  |	3	  |0     |	0  | 39.0| 80.0| 51  |2.0|  2 |
-
-
-Aggregation:
-
-| sensor_id | lane_id | time(day or month or hour) | HEAD    | SPD       |          |         |        |
-|-----------|---------|----------------------------|---------|-----------|----------|---------|--------|
-|-----------|---------|----------------------------| count   | mean      | std      | min     | max    |           
-| 1888      |	1     |	0	                       | 4	     | 47.000000 | 2.449490 | 44	  |  49    |
-| 1888      |	1     |	5	                       | 3	     | 48.666667 | 2.081666 | 47	  |  51    |
-| 1888      |	1     |	6	                       | 12	     | 48.083333 | 2.906367 | 43	  |  55    |
-
-
-**Astra**:
-
-Preprocessing:
-
-| _id                    | zs_id | vd |	vd_class_val | vd_dir | vd_speed_val |	year |	month |	day | hour | wkday |
-|------------------------|-------|----|	------------ | ------ | ------------ |	---- |	----- |	--- | ---- | ----- |
-|5e0be1003b035ede49e1c836|	2    |	2 |	3            |	+     |	71           |	2020 |	1     |	1   |	23 |	2  |
-|5e0be1083b035ede49e1c851|	2    |	2 |	3            |	+     |	67           |	2020 |	1     |	5   |	21 |	3  |
-|5e0be1183b035ede49e1c8a9|	2    |	1 |	3            |	+	  | 83           |	2020 |	1     |	1   |	0  | 	2  |
-|5e0be11a3b035ede49e1c8b5|	2    |	1 |	3            |	+     |	78           |	2020 |	1     |	1   |	0  |	2  |
-|5e0be11c3b035ede49e1c8b8|	2    |	2 |	3            |	+     |	80           |	2020 |	1     |	1   |	0  |	2  |
-
-Aggregation:
-
-| zs_id     | vd      | time(day or month or hour) | _id     | vd_speed_val |          |         |        |
-|-----------|---------|----------------------------|---------|--------------|----------|---------|--------|
-|-----------|---------|----------------------------| count   | mean         | std      | min     | max    |           
-| 42        |	1     |	0	                       | 4	     | 47.000000    | 2.449490 | 44	     |  49    |
-| 42        |	1     |	5	                       | 3	     | 48.666667    | 2.081666 | 47	     |  51    |
-| 42        |	1     |	6	                       | 12	     | 48.083333    | 2.906367 | 43	     |  55    |
-
-
-**City**:
-
-| sensor_id | time(day or month or hour) | avg_flow |  avg_occ  | ... | 
-| --------- | -------------------------- | ------- | --------- | --- |
-|           |                            |         |           |     |
-
-Then save the data with the name in format of `sensorid_time.csv` with the time either being hour, day or month.
-
-The data is organized the way below:
-
-```shell
-figs
-├── astra
-├── canton
-└── city
-preprocessed_data
-├── astra
-├── canton
-└── city
-raw_data
-├── astra
-├── canton
-└── city
-spatial
-├── astra
-├── canton
-└── city
-```
-
-In each folder, we store the data in a predefined way. If the raw data is too large to fit into the hardware, we save a file containing the links to the cloud. The `figs` folder contains the data visulization for each sensor. 
-
-### Task 2: Visualization
-
-We use `folium` and `plotly` to visualize the data to have a basic idea of the data. 
-
-## Stage 2: Build Machine Learning Model
-After having preprocessed the data, we now proceed to building a machine learning model that reveals the connection between covid and the traffic state. 
-
-We first cluster the sensors to reduce the data dimensions. We could do different clustering to get different insights. Start simple we just cluster them by regions. 
-
-Then we decide which traffic feature we want to use, could be 
-
-- Total/Average occupancy of the cluster
-- Total/Average flow of the cluster
-- Total car counts of the cluster
-- …
-
-The input of the model will be 
-
-- The case number
-- The R factor
-- The rate of changing of R factor
-- The rate of changing of case number
-- The lockdown level
-- Workday or holiday
-- …
-
-The output will be
-
-- The traffic feature of each cluster (relative or absolute)
-- …
-
-### Task 0: Covid Data
-
-[-----TODO-----]
-
-Prepare the Covid data and make it accessible to everyone.
-
-### Task 1: Strategty
-
-[-----TODO-----]
-
-Decide on a clustering strategy, the feature to use
-
-
-### Task 2: Process the Data
-
-[-----TODO-----]
-
-Process the data such that it is able to be fed into the model
-
-### Task 3: ML Model
-
-[-----TODO-----]
-
-Build a training pipeline using PyTorch or anything else
+![](res/poster.jpg)

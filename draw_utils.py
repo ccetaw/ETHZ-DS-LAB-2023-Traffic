@@ -528,6 +528,9 @@ def draw_scatter_3d(x, y, z, color, layout_dict=dict(), trace_dict=dict()):
     return fig
 
 if __name__ == "__main__":
+    """
+    Test code below
+    """
     id_path = "./preprocessed_data/city/city_id.csv"
     data_path = "./preprocessed_data/city"
     id = list(pd.read_csv(id_path)["detid"])
